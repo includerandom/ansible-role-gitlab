@@ -16,7 +16,7 @@ gitlab_rails['gitlab_default_theme'] = "{{ gitlab_default_theme }}"
 
 # Whether to redirect http to https.
 nginx['redirect_http_to_https'] = {{ gitlab_redirect_http_to_https | lower }}
-{% if gitlab_https_enable %}
+{% if gitlab_ssl_certificate and gitlab_ssl_certificate_key is defined %}
 nginx['ssl_certificate'] = "{{ gitlab_ssl_certificate }}"
 nginx['ssl_certificate_key'] = "{{ gitlab_ssl_certificate_key }}"
 {% endif %}
