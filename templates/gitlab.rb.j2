@@ -61,6 +61,9 @@ nginx['listen_port'] = "{{ gitlab_nginx_listen_port }}"
 {% if gitlab_nginx_listen_https is defined %}
 nginx['listen_https'] = {{ gitlab_nginx_listen_https }}
 {% endif %}
+{% if gitlab_nginx_custom_server_config is defined %}
+nginx['custom_gitlab_server_config'] = "{{ gitlab_nginx_custom_server_config }}"
+{% endif %}
 
 # Use smtp instead of sendmail/postfix
 # More details and example configuration at
@@ -84,6 +87,7 @@ gitlab_rails['smtp_ca_file'] = "{{ gitlab_smtp_ca_file }}"
 
 # Enable letsencrypt
 # GitLab 10.5 and 10.6 require this option
+letsencrypt['enable'] = {{ gitlab_letsencrypt_enable | lower }}
 {% if gitlab_letsencrypt_enable %}
 letsencrypt['enable'] = {{ gitlab_letsencrypt_enable | lower }}
 letsencrypt['contact_emails'] = ['{{ gitlab_letsencrypt_contact_emails }}']
@@ -103,7 +107,7 @@ nginx['ssl_client_certificate'] = "{{ gitlab_nginx_ssl_client_certificate }}"
 {% endif %}
 
 # GitLab registry.
-registry['enable'] = {{ gitlab_registry_enable }}
+registry['enable'] = {{ gitlab_registry_enable | lower }}
 {% if gitlab_registry_enable %}
 registry_external_url "{{ gitlab_registry_external_url }}"
 registry_nginx['ssl_certificate'] = "{{ gitlab_registry_nginx_ssl_certificate }}"

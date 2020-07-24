@@ -44,9 +44,13 @@ gitlab_smtp_ca_file: "/etc/ssl/certs/ca-certificates.crt"
 # 2-way SSL Client Authentication support.
 gitlab_nginx_ssl_verify_client: ""
 gitlab_nginx_ssl_client_certificate: ""
+gitlab_nginx_custom_server_config: ""
 
 # Probably best to leave this as the default, unless doing testing.
 gitlab_restart_handler_failed_when: 'gitlab_restart.rc != 0'
+
+# Use custom certbot installed in system
+gitlab_use_custom_certbot: false
 
 # Enable letsencrypt
 gitlab_letsencrypt_enable: false                     # GitLab 10.5 and 10.6 require this option
@@ -92,7 +96,7 @@ gitlab_rails_monitoring_whitelist: "'127.0.0.0/8', '192.168.1.1'"
 gitlab_nginx_prometheus_allow_from: '192.168.1.1'
 
 # Registry configuration.
-gitlab_registry_enable: "false"
+gitlab_registry_enable: false
 gitlab_registry_external_url: "https://gitlab.example.com:4567"
 gitlab_registry_nginx_ssl_certificate: "/etc/gitlab/ssl/gitlab.crt"
 gitlab_registry_nginx_ssl_certificate_key: "/etc/gitlab/ssl/gitlab.key"

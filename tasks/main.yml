@@ -71,6 +71,30 @@
     creates={{ gitlab_ssl_certificate }}
   when: gitlab_create_self_signed_cert | bool
 
+- name: "Use custom certbot | if gitlab_use_custom_certbot: true"
+  include_role:
+    name: ansible-role-certbot
+  vars:
+    certbot_create_method: webroot
+    certbot_install_from_source: false
+    certbot_auto_renew: true
+    certbot_auto_renew_hour: '5'
+    certbot_auto_renew_minute: '50'
+    certbot_create_if_missing: true
+    certbot_script_redhat: certbot
+    certbot_webroot_path: '/var/opt/gitlab/nginx/www'
+    #certbot_advanced_params: '--deploy-hook /etc/update_cert_in_db.sh'
+    certbot_admin_email: "{{ gitlab_email_from }}"
+    certbot_certs:
+      - email: "{{ gitlab_email_from }}"
+        domains: "{{ gitlab_domain }}"
+    certbot_create_command_webroot: >-
+      certbot certonly --expand --noninteractive --agree-tos
+      -a webroot --webroot-path={{ certbot_webroot_path }} --email {{ gitlab_email_from }}
+      -d {{ gitlab_domain }}
+  when:
+    - gitlab_use_custom_certbot | default('false')
+
 - name: Copy GitLab configuration file.
   template:
     src: "{{ gitlab_config_template }}"
@@ -79,4 +103,3 @@
     group: root
     mode: 0600
   notify: restart gitlab
-...
