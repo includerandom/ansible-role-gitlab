@@ -55,6 +55,13 @@ EOS
 
 # GitLab Nginx
 ## See https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/nginx.md
+{% if gitlab_nginx_enable is defined %}
+nginx['enable'] = {{ gitlab_nginx_enable | lower }}
+{% endif %}
+{% if gitlab_web_server_external_users is defined %}
+web_server['external_users'] = {{ gitlab_web_server_external_users }}
+{% endif %}
+
 {% if gitlab_nginx_listen_port is defined %}
 nginx['listen_port'] = "{{ gitlab_nginx_listen_port }}"
 {% endif %}
